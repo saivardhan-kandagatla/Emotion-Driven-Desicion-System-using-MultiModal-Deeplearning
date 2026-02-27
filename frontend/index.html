@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emotion-Driven Decision System</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/components.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1 class="app-title">🧠 Emotion-Driven Decision System</h1>
+                <p class="app-subtitle">Multimodal Deep Learning for Intelligent Insights</p>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Tab Navigation -->
+            <div class="tab-navigation">
+                <button class="tab-button active" data-tab="facial" id="facialTab">
+                    📷 Facial Emotion
+                </button>
+                <button class="tab-button" data-tab="speech" id="speechTab">
+                    🎤 Speech Emotion
+                </button>
+                <button class="tab-button" data-tab="text" id="textTab">
+                    💬 Text Emotion
+                </button>
+                <button class="tab-button" data-tab="multimodal" id="multimodalTab">
+                    🔄 Multimodal
+                </button>
+            </div>
+
+            <!-- Tab Content -->
+            <div class="tab-content-wrapper">
+                <!-- Facial Emotion Tab -->
+                <div class="tab-content active" id="facialContent">
+                    <div class="input-section card">
+                        <h2>Facial Emotion Analysis</h2>
+                        <div class="input-controls">
+                            <button class="btn btn-primary" id="startCamera">
+                                📷 Start Camera
+                            </button>
+                            <button class="btn btn-secondary" id="stopCamera" style="display: none;">
+                                ⏹️ Stop Camera
+                            </button>
+                            <label class="btn btn-outline" for="imageUpload">
+                                📁 Upload Image
+                            </label>
+                            <input type="file" id="imageUpload" accept="image/*" style="display: none;">
+                        </div>
+
+                        <div class="camera-container" id="cameraContainer" style="display: none;">
+                            <video id="cameraVideo" autoplay playsinline></video>
+                            <canvas id="cameraCanvas" style="display: none;"></canvas>
+                            <button class="btn btn-success capture-btn" id="captureBtn">
+                                📸 Capture & Analyze
+                            </button>
+                        </div>
+
+                        <div class="preview-container" id="imagePreview" style="display: none;">
+                            <img id="previewImage" alt="Preview">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Speech Emotion Tab -->
+                <div class="tab-content" id="speechContent">
+                    <div class="input-section card">
+                        <h2>Speech Emotion Analysis</h2>
+                        <div class="input-controls">
+                            <button class="btn btn-primary" id="startRecording">
+                                🎤 Start Recording
+                            </button>
+                            <button class="btn btn-danger" id="stopRecording" style="display: none;">
+                                ⏹️ Stop Recording
+                            </button>
+                            <label class="btn btn-outline" for="audioUpload">
+                                📁 Upload Audio
+                            </label>
+                            <input type="file" id="audioUpload" accept="audio/*" style="display: none;">
+                        </div>
+
+                        <div class="recording-indicator" id="recordingIndicator" style="display: none;">
+                            <div class="pulse-animation"></div>
+                            <span>Recording...</span>
+                        </div>
+
+                        <div class="audio-preview" id="audioPreviewContainer" style="display: none;">
+                            <audio id="audioPreview" controls></audio>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Text Emotion Tab -->
+                <div class="tab-content" id="textContent">
+                    <div class="input-section card">
+                        <h2>Text Emotion Analysis</h2>
+                        <div class="input-controls-vertical">
+                            <textarea id="textInput"
+                                placeholder="Type or paste text here to analyze emotions... (e.g., 'I am so happy today!')"
+                                rows="4" class="text-input-field"></textarea>
+                            <button class="btn btn-primary btn-large" id="analyzeText">
+                                💬 Analyze Text
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Multimodal Tab -->
+                <div class="tab-content" id="multimodalContent">
+                    <div class="input-section card">
+                        <h2>Multimodal Analysis</h2>
+                        <p class="info-text">Upload both image and audio for combined emotion analysis</p>
+
+                        <div class="multimodal-inputs">
+                            <div class="input-group">
+                                <h3>Image</h3>
+                                <label class="btn btn-outline" for="multiImageUpload">
+                                    📁 Upload Image
+                                </label>
+                                <input type="file" id="multiImageUpload" accept="image/*" style="display: none;">
+                                <div id="multiImagePreview" class="mini-preview"></div>
+                            </div>
+
+                            <div class="input-group">
+                                <h3>Audio</h3>
+                                <label class="btn btn-outline" for="multiAudioUpload">
+                                    📁 Upload Audio
+                                </label>
+                                <input type="file" id="multiAudioUpload" accept="audio/*" style="display: none;">
+                                <div id="multiAudioPreview" class="mini-preview"></div>
+                            </div>
+
+                            <div class="input-group">
+                                <h3>Text (Optional)</h3>
+                                <textarea id="multiTextInput" placeholder="Add text to the analysis..." rows="2"
+                                    class="text-input-field mini-text-input"></textarea>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-success btn-large" id="analyzeMultimodal">
+                            🔍 Analyze Combined Emotions
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div class="results-section" id="resultsSection" style="display: none;">
+                <!-- Emotion Display -->
+                <div class="card emotion-card">
+                    <h2>Detected Emotion</h2>
+                    <div id="emotionDisplay"></div>
+                </div>
+
+                <!-- Decision Panel -->
+                <div class="card decision-card">
+                    <h2>Recommendations</h2>
+                    <div id="decisionPanel"></div>
+                </div>
+            </div>
+
+            <!-- Loading Indicator -->
+            <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+                <div class="loading-spinner"></div>
+                <p>Analyzing emotions...</p>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Powered by Multimodal Deep Learning | Built with ❤️</p>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/api.js"></script>
+    <script src="js/camera.js"></script>
+    <script src="js/audio.js"></script>
+    <script src="js/emotion-display.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>
